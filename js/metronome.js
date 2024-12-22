@@ -102,8 +102,12 @@ function resetCanvas (e) {
     window.scrollTo(0,0); 
 }
 
+let ctl_measure_count = null;
 function draw() {
     var currentNote = last16thNoteDrawn;
+    if(ctl_measure_count == null)
+        ctl_measure_count = document.getElementById('measure_count');
+
     if (audioContext) {
         var currentTime = audioContext.currentTime;
 
@@ -112,14 +116,22 @@ function draw() {
             notesInQueue.splice(0,1);   // remove note from queue
         }
 
+        let colors = [ 
+          '#FFA500', '#444', '#444', '#444',
+          '#FFA500','#708090','#708090','#708090',
+          '#FFA500', 'grey', 'grey', 'grey',
+          '#FFA500', '#ddd', '#ddd', '#ddd',
+        ];
         // We only need to draw if the note has moved.
         if (last16thNoteDrawn != currentNote) {
             var x = Math.floor( canvas.width / 18 );
             canvasContext.clearRect(0,0,canvas.width, canvas.height); 
             for (var i=0; i<16; i++) {
                 canvasContext.fillStyle = ( currentNote == i ) ? 
-                    ((currentNote%4 === 0)?"red":"blue") : "black";
+                    ((currentNote%4 === 0)?"red":"blue") : colors[i];
                 canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
+              // if(i == 0)
+              //   ctl_measure_count.innerHTML = ++measure_count;
             }
             last16thNoteDrawn = currentNote;
         }
@@ -128,6 +140,7 @@ function draw() {
     requestAnimFrame(draw);
 }
 
+let measure_count = 0;
 function init(){
     var container = document.createElement( 'div' );
 
@@ -140,6 +153,8 @@ function init(){
     container.appendChild(canvas);    
     canvasContext.strokeStyle = "#ffffff";
     canvasContext.lineWidth = 2;
+
+    measure_count = 0;
 
     window.onorientationchange = resetCanvas;
     window.onresize = resetCanvas;
