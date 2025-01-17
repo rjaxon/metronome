@@ -117,10 +117,10 @@ function draw() {
         }
 
         let colors = [ 
-          '#FFA500', '#444', '#444', '#444',
+          '#FFA500', '#ddd', '#ddd', '#ddd',
           '#FFA500','#708090','#708090','#708090',
           '#FFA500', 'grey', 'grey', 'grey',
-          '#FFA500', '#ddd', '#ddd', '#ddd',
+          '#FFA500', '#444', '#444', '#444',
         ];
         // We only need to draw if the note has moved.
         if (last16thNoteDrawn != currentNote) {
@@ -130,14 +130,37 @@ function draw() {
                 canvasContext.fillStyle = ( currentNote == i ) ? 
                     ((currentNote%4 === 0)?"red":"blue") : colors[i];
                 canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
-              // if(i == 0)
-              //   ctl_measure_count.innerHTML = ++measure_count;
             }
+
+            if(currentNote == 0) {
+              ++measure_count;
+              if(12 < measure_count)
+                measure_count = 1;
+
+              // ctl_measure_count.innerHTML = measure_count;
+              updateMeasures(measure_count);
+            }
+
+            // console.log(currentNote);
             last16thNoteDrawn = currentNote;
         }
     }
     // set up to draw again
     requestAnimFrame(draw);
+}
+
+function updateMeasures(current) {
+  if(current == 1)
+    clearMeasures();
+  console.log(`updateMeasures: ${current}`);
+
+  document.getElementById(`measure-${current}`).classList.add('past');
+}
+
+function clearMeasures() {
+  document.querySelectorAll('.past').forEach(element => {
+    element.classList.remove('past');
+  });
 }
 
 let measure_count = 0;
