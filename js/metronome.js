@@ -132,13 +132,28 @@ function draw() {
                 canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
             }
 
-            if(currentNote == 0) {
+            if(currentNote == 4) {
+              ++submeasure_count;
+              updateCurrentMeasure(submeasure_count);
+            }
+            else if(currentNote == 8) {
+              ++submeasure_count;
+              updateCurrentMeasure(submeasure_count);
+            }
+            else if(currentNote == 12) {
+              ++submeasure_count;
+              updateCurrentMeasure(submeasure_count);
+            }
+            else if(currentNote == 0) {
+              submeasure_count = 0;
+
               ++measure_count;
-              if(12 < measure_count)
+              if(12 < measure_count) {
                 measure_count = 1;
+              }
 
               // ctl_measure_count.innerHTML = measure_count;
-              updateMeasures(measure_count);
+              updateMeasures(measure_count, submeasure_count);
             }
 
             // console.log(currentNote);
@@ -149,21 +164,39 @@ function draw() {
     requestAnimFrame(draw);
 }
 
-function updateMeasures(current) {
-  if(current == 1)
-    clearMeasures();
-  console.log(`updateMeasures: ${current}`);
+function updateCurrentMeasure(beat) {
+  console.log(`beat: ${beat}`);
+  let current = document.querySelector('.current');
+  if(current)
+    current.classList.add(`part-${beat}`);
+}
 
-  document.getElementById(`measure-${current}`).classList.add('past');
+function updateMeasures(measure) {
+  if(measure == 1) {
+    clearMeasures();
+  }
+
+  console.log(`updateMeasures: ${measure}`);
+
+  // document.getElementById(`measure-${measure}`).classList.add('past');
+
+  let current = document.querySelector('.current');
+  if(current)
+    current.className = 'measure past';
+
+  document.getElementById(`measure-${measure}`).classList.add('current');
 }
 
 function clearMeasures() {
   document.querySelectorAll('.past').forEach(element => {
     element.classList.remove('past');
   });
+
+  document.getElementById(`measure-12`).className = 'measure';
 }
 
 let measure_count = 0;
+let submeasure_count = 0;
 function init(){
     var container = document.createElement( 'div' );
 

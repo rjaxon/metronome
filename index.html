@@ -10,6 +10,11 @@
 
 
     <style>
+
+        body {
+            overflow: hidden;
+        }
+    
         .hidden {
             display: none;
         }
@@ -26,6 +31,30 @@
                 text-align: center;
                 font-weight: bold;
             }
+        }
+
+        .current {
+          background: 
+            linear-gradient(to right, #ddd 25%, #fff 25%, transparent 0%),
+            #fff; /* Fallback color */
+        }
+
+        .current.part-1 {
+          background: 
+            linear-gradient(to right, #ddd 50%, #fff 50%, transparent 0%),
+            #fff; /* Fallback color */
+        }
+
+        .current.part-2 {
+          background: 
+            linear-gradient(to right, #ddd 75%, #fff 75%, transparent 0%),
+            #fff; /* Fallback color */
+        }
+
+        .current.part-3 {
+          background: 
+            linear-gradient(to right, #ddd 100%, #fff 100%, transparent 0%),
+            #fff; /* Fallback color */
         }
 
         div.past {
