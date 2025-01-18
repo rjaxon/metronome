@@ -10,7 +10,7 @@ var scheduleAheadTime = 0.1;    // How far ahead to schedule audio (sec)
                             // This is calculated from lookahead, and overlaps 
                             // with next interval (in case the timer is late)
 var nextNoteTime = 0.0;     // when the next note is due.
-var noteResolution = 0;     // 0 == 16th, 1 == 8th, 2 == quarter note
+var noteResolution = 2;     // 0 == 16th, 1 == 8th, 2 == quarter note
 var noteLength = 0.05;      // length of "beep" (in seconds)
 var canvas,                 // the canvas element
     canvasContext;          // canvasContext is the canvas' context 2D
@@ -18,6 +18,9 @@ var last16thNoteDrawn = -1; // the last "box" we drew on the screen
 var notesInQueue = [];      // the notes that have been put into the web audio,
                             // and may or may not have played yet. {note, time}
 var timerWorker = null;     // The Web Worker used to fire timer messages
+
+
+var mute = false;
 
 
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
@@ -38,6 +41,9 @@ function nextNote() {
 function scheduleNote( beatNumber, time ) {
     // push the note on the queue, even if we're not playing.
     notesInQueue.push( { note: beatNumber, time: time } );
+
+    if(mute)
+      return;
 
     if ( (noteResolution==1) && (beatNumber%2))
         return; // we're not playing non-8th 16th notes
@@ -165,7 +171,7 @@ function draw() {
 }
 
 function updateCurrentMeasure(beat) {
-  console.log(`beat: ${beat}`);
+  // console.log(`beat: ${beat}`);
   let current = document.querySelector('.current');
   if(current)
     current.classList.add(`part-${beat}`);
@@ -176,9 +182,7 @@ function updateMeasures(measure) {
     clearMeasures();
   }
 
-  console.log(`updateMeasures: ${measure}`);
-
-  // document.getElementById(`measure-${measure}`).classList.add('past');
+  // console.log(`updateMeasures: ${measure}`);
 
   let current = document.querySelector('.current');
   if(current)
