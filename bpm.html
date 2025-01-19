@@ -9,6 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BPM Counter</title>
+    <script src="js/bpm.js"></script>
+
     <style>
         body {
             display: flex;
@@ -34,26 +36,14 @@
     </div>
 
     <script>
-        const tapButton = document.getElementById('tapButton');
+
         const bpmDisplay = document.getElementById('bpm');
-        let tapTimes = [];
+        function onBpmSet(bpm) {
+          bpmDisplay.textContent = `BPM: ${bpm}`;
+        }
 
-        tapButton.addEventListener('click', () => {
-            const now = Date.now();
-            tapTimes.push(now);
+        bpm.init('tapButton', onBpmSet);
 
-            // Keep only the last 10 taps for a more accurate BPM calculation
-            if (tapTimes.length > 10) {
-                tapTimes.shift();
-            }
-
-            if (tapTimes.length > 1) {
-                const intervals = tapTimes.slice(1).map((time, index) => time - tapTimes[index]);
-                const averageInterval = intervals.reduce((a, b) => a + b) / intervals.length;
-                const bpm = Math.round(60000 / averageInterval);
-                bpmDisplay.textContent = `BPM: ${bpm}`;
-            }
-        });
     </script>
 </body>
 </html>
