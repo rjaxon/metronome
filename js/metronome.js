@@ -154,7 +154,7 @@ function draw() {
               submeasure_count = 0;
 
               ++measure_count;
-              if(12 < measure_count) {
+                if (getMeasureCount() < measure_count) {
                 measure_count = 1;
               }
 
@@ -168,6 +168,14 @@ function draw() {
     }
     // set up to draw again
     requestAnimFrame(draw);
+}
+
+var measureTotal = -1;
+function getMeasureCount() {
+    if (measureTotal <= 0) {
+        measureTotal = document.querySelectorAll('.measure').length;
+    }
+    return measureTotal;
 }
 
 function updateCurrentMeasure(beat) {
@@ -196,7 +204,12 @@ function clearMeasures() {
     element.classList.remove('past');
   });
 
-  document.getElementById(`measure-12`).className = 'measure';
+
+    document.querySelectorAll('.current').forEach(element => {
+        element.className = 'measure';
+    });
+
+  //document.getElementById(`measure-12`).className = 'measure';
 }
 
 let measure_count = 0;
