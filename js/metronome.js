@@ -54,9 +54,9 @@ function scheduleNote( beatNumber, time ) {
     var osc = audioContext.createOscillator();
     osc.connect( audioContext.destination );
     if (beatNumber % 16 === 0)    // beat 0 == high pitch
-        osc.frequency.value = 880.0;
+        osc.frequency.value = 660.0;
     else if (beatNumber % 4 === 0 )    // quarter notes = medium pitch
-        osc.frequency.value = 440.0;
+        osc.frequency.value = 490.0;
     else                        // other 16th notes = low pitch
         osc.frequency.value = 220.0;
 
@@ -94,6 +94,7 @@ function play() {
         timerWorker.postMessage("start");
         return "stop";
     } else {
+        reset();
         timerWorker.postMessage("stop");
         return "play";
     }
@@ -245,6 +246,16 @@ function init(){
             console.log("message: " + e.data);
     };
     timerWorker.postMessage({"interval":lookahead});
+}
+
+function reset() {
+    console.log('reset');
+    last16thNoteDrawn = -1;
+    notesInQueue = [];
+    clearMeasures();
+
+    measure_count = 0;
+    submeasure_count = 0;
 }
 
 window.addEventListener("load", init );
