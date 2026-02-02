@@ -21,6 +21,10 @@ var timerWorker = null;     // The Web Worker used to fire timer messages
 
 
 var mute = false;
+let sound_low = 220.0;
+let sound_middle = 490.0;
+let sound_high = 660.0;
+let first_sound_high = true;
 
 
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
@@ -54,11 +58,11 @@ function scheduleNote( beatNumber, time ) {
     var osc = audioContext.createOscillator();
     osc.connect( audioContext.destination );
     if (beatNumber % 16 === 0)    // beat 0 == high pitch
-        osc.frequency.value = 660.0;
+        osc.frequency.value = first_sound_high ? sound_high : sound_middle;
     else if (beatNumber % 4 === 0 )    // quarter notes = medium pitch
-        osc.frequency.value = 490.0;
+        osc.frequency.value = sound_middle;
     else                        // other 16th notes = low pitch
-        osc.frequency.value = 220.0;
+        osc.frequency.value = sound_low;
 
     osc.start( time );
     osc.stop( time + noteLength );
