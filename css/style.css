@@ -1,0 +1,59 @@
+
+body {
+    overflow-x: hidden;
+}
+
+#tempoLabel {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+div.row {
+    margin: 1em;
+    width: 100%;
+    div.measure {
+        display: inline-block;
+        border: 1px solid #ddd;
+        width: 23%;
+        font-size: 3em;
+        text-align: center;
+        font-weight: bold;
+    }
+}
+
+.current {
+    background: linear-gradient(to right, #f44336 25%, #fff 25%, transparent 0%), #fff; /* Fallback color */
+}
+
+    .current.part-1 {
+        background: linear-gradient(to right, #f44336 50%, #fff 50%, transparent 0%), #fff; /* Fallback color */
+    }
+
+    .current.part-2 {
+        background: linear-gradient(to right, #f44336 75%, #fff 75%, transparent 0%), #fff; /* Fallback color */
+    }
+
+    .current.part-3 {
+        background: linear-gradient(to right, #f44336 100%, #fff 100%, transparent 0%), #fff; /* Fallback color */
+    }
+
+div.past {
+    background-color: #ddd;
+}
+
+.fretboard-container {
+    padding-left: 5%;
+}
+
+div.fretboard-controls select {
+    margin-left: .25em;
+    margin-right: .25em;
+    padding-left: 1.0em;
+    padding-right: 1.0em;
+    font-size: 14px;
+    font-family: arial;
+    font-weight: bold;
+}

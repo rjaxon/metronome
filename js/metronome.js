@@ -26,6 +26,7 @@ let sound_middle = 490.0;
 let sound_high = 660.0;
 let first_sound_high = true;
 
+let on_new_measure_callback = null;
 
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
 window.requestAnimFrame = window.requestAnimationFrame;
@@ -165,6 +166,12 @@ function draw() {
 
               // ctl_measure_count.innerHTML = measure_count;
               updateMeasures(measure_count, submeasure_count);
+
+              
+
+                if(on_new_measure_callback) {
+                    on_new_measure_callback();
+                }
             }
 
             // console.log(currentNote);

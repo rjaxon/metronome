@@ -1,74 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width user-scalable=no">
+    <!--<meta name="viewport" content="width=device-width user-scalable=yes">-->
     <title>Metronome</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="//cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
     <script src="js/metronome.js"></script>
     <script src="js/bpm.js"></script>
+    <link rel="stylesheet" href="/music-tools/fretboard/style.css">
+    <script src="/music-tools/fretboard/fretboard.js"></script>
 
 
-    <style>
 
-        body {
-            overflow: hidden;
-        }
 
-        #tempoLabel {
-            cursor: pointer;
-        }
-    
-        .hidden {
-            display: none !important;
-        }
-
-        div.row { 
-            margin: 1em;
-            width: 100%;
-
-            div.measure {
-                display: inline-block;
-                border: 1px solid #ddd;
-                width: 23%;
-                font-size: 3em;
-                text-align: center;
-                font-weight: bold;
-            }
-        }
-
-        .current {
-          background: 
-            linear-gradient(to right, #f44336 25%, #fff 25%, transparent 0%),
-            #fff; /* Fallback color */
-        }
-
-        .current.part-1 {
-          background: 
-            linear-gradient(to right, #f44336 50%, #fff 50%, transparent 0%),
-            #fff; /* Fallback color */
-        }
-
-        .current.part-2 {
-          background: 
-            linear-gradient(to right, #f44336 75%, #fff 75%, transparent 0%),
-            #fff; /* Fallback color */
-        }
-
-        .current.part-3 {
-          background: 
-            linear-gradient(to right, #f44336 100%, #fff 100%, transparent 0%),
-            #fff; /* Fallback color */
-        }
-
-        div.past {
-            background-color: #ddd;
-        }
-        
-    </style>
-  </head>
-  <body onload="onPageLoad();">
+</head>
+<body onload="onPageLoad();">
     <a href="https://github.com/cwilso/metronome" class="hidden" style="position: absolute; top: -5px; right: 15px;">Fork Original on GitHub</a>
     <a href="https://github.com/rjaxon/metronome" class="hidden" style="position: absolute; top: 20px; right: 15px;">Or, Fork mine on GitHub</a>
     <div id="controls">
@@ -81,15 +29,16 @@
         </div>
         <div>Resolution:<select id="note-resolution" onchange="noteResolutionChanged(this);"><option>16th notes<option>8th notes<option selected>Quarter notes</select></div>
         <div>Mute: <input id="mute" type="checkbox" onchange="muteChanged(this);" /></div>
+        <div>Fretboard: <input id="mute" type="checkbox" onchange="showFretboardChanged(this);" /></div>
         <div class="hidden">
             Measures: <select onchange="measureCountChanged(this);">
-    <option value="4">4</option>
-    <option value="8">8</option>
-    <option value="12" selected>12</option>
-    <option value="16">16</option>
-    <option value="16">16</option>
-    <option value="32">32</option>
-</select>
+                <option value="4">4</option>
+                <option value="8">8</option>
+                <option value="12" selected>12</option>
+                <option value="16">16</option>
+                <option value="16">16</option>
+                <option value="32">32</option>
+            </select>
         </div>
     </div>
     <div class="hidden" style="font-size: 24px; font-weight: bold; font-family: Arial; margin: 15px; ">
@@ -117,126 +66,13 @@
         </div>
     </div>
 
-    <script>
 
-        function onTempoInput(event) {
-            // tempo = event.target.value;
-            tempoChange(event.target.value);
-        }
-        
-        function tempoChange(_tempo) {
-            console.log('tempoChange');
-            tempo = _tempo;
-            document.getElementById('showTempo').innerText=tempo;
-
-            setCookie('tempo', _tempo);
-        }
-
-        const bpmTempo = document.getElementById('tempo');
-        const bpmShowTempo = document.getElementById('showTempo');
-        function onBpmSet(bpm) {
-            bpmTempo.value = bpm;
-            tempoChange(bpm);
-        }
-
-        function muteChanged(sender) {
-            mute = sender.checked;
-            setCookie('mute', mute); 
-        }
-
-        function noteResolutionChanged(sender) {
-            noteResolution = sender.selectedIndex;
-            setCookie('note-resolution', noteResolution);
-        }
-
-        function measureClicked(sender) {
-            let text = sender.innerHTML.replace('&nbsp;', '').trim();
-            console.log('measure clicked', sender, text);
-
-            let list = "I,II,III,IV,V,VI,VII,i,ii,iii,iv,v,vi,vii,&nbsp;".split(',');
+    <my-notes-fretboard></my-notes-fretboard>
 
 
-            let idx = list.indexOf(text) + 1;
-            if (idx >= list.length) {
-                idx = 0;
-            }
 
-            sender.innerHTML = list[idx];
-        }
-
-        function measureCountChanged(sender) {
-            console.log('measureCountChanged', sender, sender.value);
-
-            switch (sender.value) {
-                case 16:
-                    break;
-
-                case 32:
-                    break;
-            }
-        }
-
-        function onPageLoad(e) {
-            console.log('onPageLoad');
-
-            let tempoValue = getCookie('tempo') || 120;
-            let _noteResolution = getCookie('note-resolution') || 2;
-            let _mute = getCookie('mute') || false;
+    <script src="js/my-metronome.js"></script>
 
 
-            let tempoLabel = document.getElementById('showTempo');
-            let tempoCtl = document.getElementById('tempo');
-            let noteResolutionCtl = document.getElementById('note-resolution');
-            let muteCtl = document.getElementById('mute');
-
-
-            tempoCtl.value = tempoValue;
-            tempo = Number(tempoCtl.value);
-            tempoLabel.innerHTML = tempoValue;
-
-            noteResolutionCtl.selectedIndex = _noteResolution;
-            noteResolution = _noteResolution;
-
-            muteCtl.checked = _mute === 'true';
-            mute = _mute === 'true';
-
-        }
-
-        function setCookie(name, value, _days) {
-            const expires = new Date();
-            let days = _days || 120;
-
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            const expiresString = `expires=${expires.toUTCString()}`;
-
-            let document = parent.document;
-            if (document) {
-                document.cookie = `${name}=${value}; ${ expiresString }; path=/`;
-            }
-        }
-
-        function getCookie(name) {
-            const nameEq = name + "=";
-            const document = parent.document;
-
-            if (document) {
-                const cookies = document.cookie.split(';');
-
-                for (let i = 0; i < cookies.length; ++i) {
-                    let cookie = cookies[i].trim();
-                    if (cookie.indexOf(nameEq) == 0) {
-                        //return cookie.substr(nameEq.length, cookie.length);
-                        return cookie.split('=')[1];
-                    }
-                }
-            }
-
-            return '';
-        }
-
-        bpm.init('tempoLabel', onBpmSet);
-
-    </script>
-
-   </body>
+</body>
 </html>
