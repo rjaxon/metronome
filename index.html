@@ -27,7 +27,16 @@
                    style="height: 20px; width: 200px"
                    onInput="onTempoInput(event)">
         </div>
-        <div>Resolution:<select id="note-resolution" onchange="noteResolutionChanged(this);"><option>16th notes<option>8th notes<option selected>Quarter notes</select></div>
+        <div>Resolution:
+            <select id="note-resolution" onchange="noteResolutionChanged(this);">
+                <option>16th notes</option>
+                <option>8th notes</option>
+                <option selected>Quarter notes</option>
+                <option>Whole notes</option>
+                <option>Beats 1 and 3</option>
+                <option>Beats 2 and 4</option>
+            </select>
+        </div>
         <div>Mute: <input id="mute" type="checkbox" onchange="muteChanged(this);" /></div>
         <div>Fretboard: <input id="mute" type="checkbox" onchange="showFretboardChanged(this);" /></div>
         <div class="hidden">

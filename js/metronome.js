@@ -55,6 +55,15 @@ function scheduleNote( beatNumber, time ) {
     if ( (noteResolution==2) && (beatNumber%4))
         return; // we're not playing non-quarter 8th notes
 
+    if ((noteResolution == 3) && (beatNumber != 0))
+        return; // not a whole note
+
+    if ((noteResolution == 4) && (beatNumber != 0 && beatNumber != 8))
+        return; // not beats 1 or 3
+
+    if ((noteResolution == 5) && (beatNumber != 4 && beatNumber != 12))
+        return; // not beats 2 or 4
+
     // create an oscillator
     var osc = audioContext.createOscillator();
     osc.connect( audioContext.destination );
